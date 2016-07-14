@@ -1,0 +1,54 @@
+---
+title: "Visualisation"
+author: "Sam Abbott"
+date: "14 July 2016"
+output: html_document
+---
+
+- Choose to look at current or all time loan book
+```{r, echo=FALSE, message=FALSE}
+#Load required packages
+source('packages.R')
+
+#Load the cleaned data
+source('data_clean.R')
+
+#Choose to look at current or all time loan book
+current <- TRUE
+if (current==TRUE)
+{
+  loan_book <- loan_book[!(loan_book$Status %in% 'Closed'),]
+}
+```
+
+### Summarise the data
+
+```{r, echo=FALSE, message=FALSE}
+
+
+book_summarise <- loan_book[,-1] %>% map(function(.) if(class(.) %in% c('character'))
+  {
+  . <- count(.) 
+  }else{
+    . <- summary(.) 
+  })
+print(book_summarise)
+```
+
+## plot distribution of interest
+```{r, echo=FALSE, message=FALSE}
+ggplot(loan_book, aes(x=Rate, fill=Product)) +
+  geom_histogram(binwidth=.005, position="dodge") +
+  geom_density(alpha=.3) +
+  facet_wrap(~Market)
+
+```
+
+## plot distribution of repayment
+```{r, echo=FALSE, message=FALSE}
+ggplot(loan_book, aes(x=Repaid, fill=Product)) +
+  geom_histogram(binwidth=.005, position="dodge") +
+  geom_density(alpha=.3) +
+  facet_wrap(~Term)
+
+```
