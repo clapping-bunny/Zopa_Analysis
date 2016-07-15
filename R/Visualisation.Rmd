@@ -37,18 +37,64 @@ print(book_summarise)
 
 ## plot distribution of interest
 ```{r, echo=FALSE, message=FALSE}
+#All Markets
+ggplot(loan_book, aes(x=Rate, fill=Product)) +
+  geom_histogram(binwidth=.005, position="dodge") +
+  geom_density(alpha=.3)
+
+#Split by Market
 ggplot(loan_book, aes(x=Rate, fill=Product)) +
   geom_histogram(binwidth=.005, position="dodge") +
   geom_density(alpha=.3) +
   facet_wrap(~Market)
 
+#Split by Term
+ggplot(loan_book, aes(x=Rate, fill=Product)) +
+  geom_histogram(binwidth=.005, position="dodge") +
+  geom_density(alpha=.3) +
+  facet_wrap(~Term)
+
+#Split by Loan purpose and product
+ggplot(loan_book, aes(x=Rate, fill=Product)) +
+  geom_histogram(binwidth=.005, position="dodge") +
+  geom_density(alpha=.3) +
+  facet_wrap(~Loan_purpose)
 ```
 
 ## plot distribution of repayment
 ```{r, echo=FALSE, message=FALSE}
 ggplot(loan_book, aes(x=Repaid, fill=Product)) +
   geom_histogram(binwidth=.005, position="dodge") +
-  geom_density(alpha=.3) +
-  facet_wrap(~Term)
+  geom_density(alpha=.3) 
 
+#Split by market
+ggplot(loan_book, aes(x=Repaid, fill=Product)) +
+  geom_histogram(binwidth=.005, position="dodge") +
+  geom_density(alpha=.3) +
+  facet_wrap(~Market)
+
+```
+
+## plot distribution of rate against laon size - no relationship
+```{r, echo=FALSE, message=FALSE}
+ggplot(loan_book, aes(x=Rate, y=Loan_size, color=Product, fill=Product, shape=Product)) +
+  geom_point() +
+  facet_wrap(~Market)
+
+
+```
+
+## plot distribution of loan size
+- zopa plus has smaller loans
+- higher risk marketsalso have smaller loans
+- no relationship between loan size and rate
+```{r, echo=FALSE, message=FALSE}
+ggplot(loan_book, aes(x=Loan_size, fill=Product)) +
+  geom_histogram(aes(y = ..density..), binwidth=1000, position="dodge") +
+  geom_density(alpha=.3) +
+  facet_wrap(~Market)
+
+ggplot(loan_book, aes(x=Rate, y=Loan_size, fill=Product, color=Product, shape=Product)) +
+  geom_point() +
+  geom_smooth()
 ```
