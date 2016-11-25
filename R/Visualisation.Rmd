@@ -2,7 +2,9 @@
 title: "Visualisation"
 author: "Sam Abbott"
 date: "14 July 2016"
-output: html_document
+output:
+  html_notebook: null
+  html_document: null
 ---
 
 - Choose to look at current or all time loan book
