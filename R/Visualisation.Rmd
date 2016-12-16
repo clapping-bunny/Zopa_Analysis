@@ -11,6 +11,7 @@ output:
 ```{r, echo=FALSE, message=FALSE}
 #Load required packages
 source('packages.R')
+library(dplyr)
 
 #Load the cleaned data
 source('data_clean.R')
@@ -65,9 +66,15 @@ ggplot(loan_book, aes(x=Rate, fill=Product)) +
 
 ## plot distribution of repayment
 ```{r, echo=FALSE, message=FALSE}
-ggplot(loan_book, aes(x=Repaid, fill=Product)) +
+ggplot(loan_book, aes(x=Repaid)) +
   geom_histogram(binwidth=.005, position="dodge") +
   geom_density(alpha=.3) 
+
+loan_book %>% 
+        mutate(Term = factor(as.character(Term))) %>% 
+  ggplot(aes(x=Repaid, fill=Term)) +
+  geom_density(alpha=.3) +
+  facet_wrap(~Market)
 
 #Split by market
 ggplot(loan_book, aes(x=Repaid, fill=Product)) +
